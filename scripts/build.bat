@@ -1,1 +1,2 @@
-go build . bin/CosmicSourceGenerator.exe
+@echo off
+go build -o bin/CosmicSourceGenerator.exe .

@@ -1,1 +1,1 @@
-go build . bin/CosmicSourceGenerator
+go build -o bin/CosmicSourceGenerator .
