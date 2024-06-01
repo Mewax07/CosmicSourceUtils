@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -9,7 +10,7 @@ import (
 )
 
 func applyPatches(srcDir string, patchesDir string) {
-	applyPatchesRecurse(srcDir, patchesDir)
+	applyPatchesRecurse(srcDir, srcDir)
 }
 
 func applyPatchesRecurse(name string, srcDir string) {
@@ -22,21 +23,16 @@ func applyPatchesRecurse(name string, srcDir string) {
 			applyPatchesRecurse(FName, srcDir)
 		} else {
 			patchFile := strings.ReplaceAll(FName, srcDir+"/", "patches/") + ".patch"
-			originalFile := strings.ReplaceAll(FName, srcDir+"/", "src/")
-			fmt.Printf("git diff --no-index --default-prefix -u --output \"%s\" \"%s\" \"%s\"\n",
-				patchFile,
-				originalFile,
-				FName, // modified
-			)
-			exec.Command("git", "diff", "--no-index", "--default-prefix", "-u", "--output",
-				patchFile,
-				originalFile,
-				FName, // modified
-			).Run()
-
-			f, _ := os.ReadFile(patchFile)
-			if len(f) == 0 {
-				os.RemoveAll(patchFile)
+			if _, err := os.Stat(patchFile); !errors.Is(err, os.ErrNotExist) {
+				fmt.Printf("git apply --ignore-whitespace \"%s\"\n",
+					patchFile,
+				)
+				CMD := exec.Command("git", "apply", "--ignore-whitespace",
+					patchFile,
+				)
+				CMD.Stdout = os.Stdout
+				CMD.Stdin = os.Stdin
+				CMD.Run()
 			}
 		}
 	}

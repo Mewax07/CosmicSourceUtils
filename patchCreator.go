@@ -10,17 +10,17 @@ import (
 	"strings"
 )
 
-func mkPatchRecurse(name string, srcDir string) {
+func mkPatchRecurse(name string, srcDir string, oldSrcDir string) {
 	entries, _ := os.ReadDir(name)
 
 	for _, entry := range entries {
 		FName := name + "/" + entry.Name()
 		if entry.IsDir() {
 			os.MkdirAll(strings.ReplaceAll(FName, srcDir+"/", "patches/"), fs.ModePerm)
-			mkPatchRecurse(FName, srcDir)
+			mkPatchRecurse(FName, srcDir, oldSrcDir)
 		} else {
 			patchFile := strings.ReplaceAll(FName, srcDir+"/", "patches/") + ".patch"
-			originalFile := strings.ReplaceAll(FName, srcDir+"/", "src/")
+			originalFile := strings.ReplaceAll(FName, srcDir+"/", oldSrcDir)
 			fmt.Printf("git diff --no-index --default-prefix -u --output \"%s\" \"%s\" \"%s\"\n",
 				patchFile,
 				originalFile,
@@ -35,6 +35,11 @@ func mkPatchRecurse(name string, srcDir string) {
 			f, _ := os.ReadFile(patchFile)
 			if len(f) == 0 {
 				os.RemoveAll(patchFile)
+			} else {
+				patchedContent := string(f)
+				patchedContent = strings.ReplaceAll(patchedContent, "temp_src_mod", "src")
+				patchedContent = strings.ReplaceAll(patchedContent, "temp_src", "src")
+				os.WriteFile(patchFile, []byte(patchedContent), fs.ModePerm)
 			}
 		}
 	}
@@ -55,7 +60,7 @@ func createPatches(version string) {
 	recursiveSort("temp_ext", "temp_src_mod")
 	os.RemoveAll("temp_ext")
 
-	mkPatchRecurse("temp_src_mod", "temp_src_mod")
+	mkPatchRecurse("temp_src_mod", "temp_src_mod", "temp_src/")
 	os.RemoveAll("temp_src_mod")
 	deleteEmptyDirs("patches")
 }

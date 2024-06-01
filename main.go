@@ -79,16 +79,16 @@ func main() {
 		createSources(os.Args[2], "temp_src")
 		createPatches(os.Args[2])
 		os.RemoveAll("temp_src")
-	//case "-p":
-	//	if _, err := os.Stat("patches"); errors.Is(err, os.ErrNotExist) {
-	//		fmt.Println("You must have a dir named \"patches\" containing all the patches.")
-	//		os.Exit(1)
-	//	}
-	//	if _, err := os.Stat("src"); errors.Is(err, os.ErrNotExist) {
-	//		fmt.Println("You must have a dir named \"src\" containing all the generated for create source code from cosmic reach.")
-	//		os.Exit(1)
-	//	}
-	//	applyPatches("src", "patches")
+	case "-p":
+		if _, err := os.Stat("patches"); errors.Is(err, os.ErrNotExist) {
+			fmt.Println("You must have a dir named \"patches\" containing all the patches.")
+			os.Exit(1)
+		}
+		if _, err := os.Stat("src"); errors.Is(err, os.ErrNotExist) {
+			fmt.Println("You must have a dir named \"src\" containing all the generated for create source code from cosmic reach.")
+			os.Exit(1)
+		}
+		applyPatches("src", "patches")
 	default:
 		printHelp()
 	}
