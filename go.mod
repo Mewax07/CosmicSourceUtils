@@ -1,3 +1,3 @@
-module CosmicSourceGenerator
+module CosmicPatchGen
 
 go 1.22

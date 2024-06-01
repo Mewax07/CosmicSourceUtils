@@ -1,1 +1,2 @@
-go build -o bin/CosmicSourceGenerator .
+set GOOS=linux
+go build -o bin/LINUX_CosmicSRCUtil .
