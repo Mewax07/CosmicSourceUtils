@@ -64,18 +64,27 @@ func printHelp() {
 	fmt.Println("\nflags:")
 	fmt.Println("\t\"-d\" Download and Prepare cr {version}, ex: CosmicSRCUtil.exe -d 0.1.33\n")
 	fmt.Println("\t\"-c\" Create patches for cr {version} using a file at \"./modifedsources/Cosmic Reach-{version}-Sources.jar\"\n\tand creates the patches in \"./patches\", ex: CosmicSRCUtil.exe -c 0.1.33\n")
+	fmt.Println("\t\"-p\" Applies the patches from \"./patches\" onto the \"./src\" dir\n\t ex: CosmicSRCUtil.exe -p 0.1.33\n")
 }
 
 func main() {
-	if len(os.Args) < 3 {
+	if len(os.Args) < 2 {
 		printHelp()
 		os.Exit(0)
 	}
 
 	switch os.Args[1] {
 	case "-d":
+		if len(os.Args) < 3 {
+			printHelp()
+			os.Exit(0)
+		}
 		createSources(os.Args[2], "src")
 	case "-c":
+		if len(os.Args) < 3 {
+			printHelp()
+			os.Exit(0)
+		}
 		createSources(os.Args[2], "temp_src")
 		createPatches(os.Args[2])
 		os.RemoveAll("temp_src")
