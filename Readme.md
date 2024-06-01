@@ -10,7 +10,8 @@ Linux: ```bash ./scripts/build.sh```
 
 Requirements to run:
 - [Golang](https://go.dev)
-- [Java (at least 17)](https://www.java.com/en/download/)
+- [Java (at least 17)](https://www.java.com/en/download/) *if the tool does not work your path env is messed up*
+- [Git](https://git-scm.com/downloads)
 
 How to run:
 - just run the program and it will tell you.
