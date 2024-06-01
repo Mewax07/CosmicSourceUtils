@@ -28,7 +28,7 @@ func findQuiltflower() string {
 	if _, err := os.Stat("quiltflower.jar"); errors.Is(err, os.ErrNotExist) {
 		embedQuiltflower := "embededQuiltflower.jar"
 		if _, err := os.Stat(embedQuiltflower); errors.Is(err, os.ErrNotExist) {
-			content, _ := lib.ReadFile("lib/" + embedQuiltflower)
+			content, _ := lib.ReadFile("lib/quiltflower.jar")
 			os.WriteFile(embedQuiltflower, content, fs.ModePerm)
 		}
 		return embedQuiltflower
@@ -62,8 +62,8 @@ func printHelp() {
 	fmt.Println("execution format must be:")
 	fmt.Println("\tCosmicSRCUtil.exe {flag} {version}")
 	fmt.Println("\nflags:")
-	fmt.Println("\t\"-d\" Download and Prepare cr {version}, ex: cosmic_src_gen.exe -d 0.1.33\n")
-	fmt.Println("\t\"-c\" Create patches for cr {version} using a file at \"./modifedsources/Cosmic Reach-{version}-Sources.jar\"\n\tand creates the patches in \"./patches\", ex: cosmic_src_gen.exe -c 0.1.33\n")
+	fmt.Println("\t\"-d\" Download and Prepare cr {version}, ex: CosmicSRCUtil.exe -d 0.1.33\n")
+	fmt.Println("\t\"-c\" Create patches for cr {version} using a file at \"./modifedsources/Cosmic Reach-{version}-Sources.jar\"\n\tand creates the patches in \"./patches\", ex: CosmicSRCUtil.exe -c 0.1.33\n")
 }
 
 func main() {
@@ -79,6 +79,16 @@ func main() {
 		createSources(os.Args[2], "temp_src")
 		createPatches(os.Args[2])
 		os.RemoveAll("temp_src")
+	//case "-p":
+	//	if _, err := os.Stat("patches"); errors.Is(err, os.ErrNotExist) {
+	//		fmt.Println("You must have a dir named \"patches\" containing all the patches.")
+	//		os.Exit(1)
+	//	}
+	//	if _, err := os.Stat("src"); errors.Is(err, os.ErrNotExist) {
+	//		fmt.Println("You must have a dir named \"src\" containing all the generated for create source code from cosmic reach.")
+	//		os.Exit(1)
+	//	}
+	//	applyPatches("src", "patches")
 	default:
 		printHelp()
 	}
