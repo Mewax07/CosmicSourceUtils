@@ -38,7 +38,7 @@ func findQuiltflower() string {
 
 func createSources(version string, srcDir string) {
 	fmt.Println("Downloading \"Cosmic Reach-" + version + ".jar\"")
-	name := downloadFile("https://github.com/CRModders/CosmicArchive/tree/main/versions/alpha/" + version + "/client" + version + ".jar")
+	name := downloadFile("https://github.com/CRModders/CosmicArchive/raw/refs/heads/main/main/versions/alpha/" + version + "/client/Cosmic-Reach-" + version + ".jar")
 	fmt.Println("Renaming \"" + name + "\" to \"cosmic-reach.jar\"")
 	os.Rename(name, "cosmic-reach.jar")
 
